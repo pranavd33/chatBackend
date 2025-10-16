@@ -1,7 +1,7 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import * as dotenv from 'dotenv';
-dotenv.config();
+// import { NestFactory } from '@nestjs/core';
+// import { AppModule } from './app.module';
+// import * as dotenv from 'dotenv';
+// dotenv.config();
 
 // async function bootstrap() {
 //   const app = await NestFactory.create(AppModule);
@@ -14,16 +14,30 @@ dotenv.config();
 // }
 // bootstrap();
 
+
+
+
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Configure CORS to allow your future frontend URL
-  const frontendURL = process.env.FRONTEND_URL || 'http://localhost:3000';
+  const allowedOrigins = [
+    process.env.FRONTEND_URL || 'https://chatfrontend-plgu.onrender.com',
+    'http://localhost:3000',
+    'http://127.0.0.1:5500',
+  ];
+
   app.enableCors({
-    origin: [frontendURL],
+    origin: allowedOrigins,
     credentials: true,
   });
 
   await app.listen(process.env.PORT || 3000);
+  console.log(`✅ Server running on port ${process.env.PORT || 3000}`);
+  console.log(`✅ Allowed origins:`, allowedOrigins);
 }
 bootstrap();

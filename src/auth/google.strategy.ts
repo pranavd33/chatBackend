@@ -1,4 +1,3 @@
-// In src/auth/google.strategy.ts
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
@@ -13,7 +12,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
       scope: ['email', 'profile'],
 
-      //prompt: 'select_account',
     });
   }
 
