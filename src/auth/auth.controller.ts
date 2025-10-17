@@ -29,13 +29,14 @@ export class AuthController {
   }
 
   @Get('google/redirect')
-  @UseGuards(GoogleAuthGuard)
-  googleAuthRedirect(@Req() req, @Res() res: Response) {
-    const user = req.user;
+@UseGuards(GoogleAuthGuard)
+googleAuthRedirect(@Req() req, @Res() res: Response) {
+  const user = req.user;
 
-    // ✅ Redirect to your frontend instead of serving index.html
-    const redirectUrl = `${process.env.FRONTEND_URL}/?user=${encodeURIComponent(JSON.stringify(user))}`;
+  // ✅ Redirect user back to frontend instead of trying to serve a file
+  const redirectUrl = `${process.env.FRONTEND_URL}/?user=${encodeURIComponent(
+    JSON.stringify(user),
+  )}`;
 
-    return res.redirect(redirectUrl);
-  }
+  return res.redirect(redirectUrl);
 }
