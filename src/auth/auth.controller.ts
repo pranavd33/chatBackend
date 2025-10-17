@@ -2,7 +2,7 @@ import { Controller, Post, Body, Get, UseGuards, Req, Res, UnauthorizedException
 import type { Response } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './login.dto';
-import { GoogleAuthGuard } from './google-auth.guard';
+import { GoogleAuthGuard } from './google-auth.guard'; // Import your custom guard
 
 @Controller('auth')
 export class AuthController {
@@ -16,28 +16,29 @@ export class AuthController {
     }
     return user;
   }
-
+  
   @Post('signup')
   async signup(@Body() loginDto: LoginDto) {
     return this.authService.createUser(loginDto);
   }
 
   @Get('google')
-  @UseGuards(GoogleAuthGuard)
-  async googleAuth() {
-    // Redirects to Google login automatically
+  @UseGuards(GoogleAuthGuard) // ✅ Use the guard directly, without arguments
+  async googleAuth(@Req() req) {
+    // This guard now correctly handles the redirect to Google
   }
 
   @Get('google/redirect')
-@UseGuards(GoogleAuthGuard)
-googleAuthRedirect(@Req() req, @Res() res: Response) {
-  const user = req.user;
-
-  // ✅ Redirect to hosted frontend
-  const redirectUrl = `${process.env.FRONTEND_URL}/?user=${encodeURIComponent(
-    JSON.stringify(user),
-  )}`;
-
-  return res.redirect(redirectUrl);
-}
+  @UseGuards(GoogleAuthGuard) // ✅ Also use the custom guard here
+  googleAuthRedirect(@Req() req, @Res() res: Response) {
+    const user = req.user;
+    
+    // This script saves user data to localStorage and redirects to the chat page
+    res.send(`
+  <script>
+    localStorage.setItem('chatUser', JSON.stringify(${JSON.stringify(user)}));
+    window.location.href = '/'; // ✅ Tells browser to go to the root path
+  </script>
+`);
+  }
 }
