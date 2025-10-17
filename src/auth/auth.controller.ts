@@ -28,17 +28,16 @@ export class AuthController {
     // This guard now correctly handles the redirect to Google
   }
 
-  @Get('google/redirect')
-  @UseGuards(GoogleAuthGuard) // ✅ Also use the custom guard here
-  googleAuthRedirect(@Req() req, @Res() res: Response) {
-    const user = req.user;
-    
-    // This script saves user data to localStorage and redirects to the chat page
-    res.send(`
-  <script>
-    localStorage.setItem('chatUser', JSON.stringify(${JSON.stringify(user)}));
-    window.location.href = '/'; // ✅ Tells browser to go to the root path
-  </script>
-`);
-  }
+@Get('google/redirect')
+@UseGuards(GoogleAuthGuard)
+googleAuthRedirect(@Req() req, @Res() res: Response) {
+  const user = req.user;
+
+  // ✅ Redirect to hosted frontend
+  const redirectUrl = `${process.env.FRONTEND_URL}/?user=${encodeURIComponent(
+    JSON.stringify(user),
+  )}`;
+
+  return res.redirect(redirectUrl);
+}
 }
