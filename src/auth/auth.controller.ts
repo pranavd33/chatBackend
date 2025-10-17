@@ -33,10 +33,11 @@ export class AuthController {
 googleAuthRedirect(@Req() req, @Res() res: Response) {
   const user = req.user;
 
-  // ✅ Redirect user back to frontend instead of trying to serve a file
+  // ✅ Redirect to hosted frontend
   const redirectUrl = `${process.env.FRONTEND_URL}/?user=${encodeURIComponent(
     JSON.stringify(user),
   )}`;
 
   return res.redirect(redirectUrl);
+}
 }
