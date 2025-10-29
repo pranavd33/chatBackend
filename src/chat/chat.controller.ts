@@ -11,13 +11,13 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { ChatService } from './chat.service';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config'; // <-- 1. IMPORT THIS
 
 @Controller('chat')
 export class ChatController {
   constructor(
     private readonly chatService: ChatService,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService, // <-- 2. INJECT THIS
   ) {}
 
   @Post('conversation/find-or-create')
@@ -45,8 +45,12 @@ export class ChatController {
     }),
   )
   uploadFile(@UploadedFile() file: Express.Multer.File) {
+    // 3. GET THE PUBLIC URL FROM ENVIRONMENT
     const baseUrl = this.configService.get<string>('API_URL');
+
+    // 4. CREATE THE CORRECT, PUBLIC URL
     const fileUrl = `${baseUrl}/uploads/${file.filename}`;
+
     return { url: fileUrl };
   }
 }
