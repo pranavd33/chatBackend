@@ -20,7 +20,7 @@ import { UsersModule } from './users/users.module';
   url: process.env.DATABASE_URL,
   
  ssl: {
-  require: true,
+
   rejectUnauthorized: false,
 },
   // host: process.env.DB_HOST,
