@@ -19,9 +19,10 @@ import { UsersModule } from './users/users.module';
   type: 'postgres',
   url: process.env.DATABASE_URL,
   
-  ssl: {
-    rejectUnauthorized: false, // Required for Render's PostgreSQL connections
-  },
+ ssl: {
+  require: true,
+  rejectUnauthorized: false,
+},
   // host: process.env.DB_HOST,
   // port: 5432,// Convert port to a number
   // username: process.env.DB_USERNAME,
