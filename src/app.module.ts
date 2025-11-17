@@ -18,6 +18,7 @@ import { UsersModule } from './users/users.module';
     TypeOrmModule.forRoot({
   type: 'postgres',
   url: process.env.DATABASE_URL,
+  
   ssl: {
     rejectUnauthorized: false, // Required for Render's PostgreSQL connections
   },
@@ -28,6 +29,8 @@ import { UsersModule } from './users/users.module';
   // database: process.env.DB_NAME,
   entities: [User, Conversation, Message],
   synchronize: true,
+
+  
 }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
